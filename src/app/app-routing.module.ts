@@ -19,6 +19,20 @@ const routes: Routes = [
         (m) => m.LoginPageModule
       ),
   },
+  {
+    path: 'frame',
+    loadChildren: () =>
+      import('./pages/shared/frame/frame.module').then(
+        (m) => m.FramePageModule
+      ),
+  },
+  {
+    path: 'frameless',
+    loadChildren: () =>
+      import('./pages/shared/frameless/frameless.module').then(
+        (m) => m.FramelessPageModule
+      ),
+  },
 ];
 
 @NgModule({
