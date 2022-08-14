@@ -1,37 +1,50 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthorizedGuard } from './guards/authorized.guard';
+import { FramePage } from './pages/shared/frame/frame.page';
 
 const routes: Routes = [
-  {
-    path: 'home',
-    loadChildren: () =>
-      import('./pages/home/home.module').then((m) => m.HomePageModule),
-  },
-  {
-    path: '',
-    redirectTo: 'home',
-    pathMatch: 'full',
-  },
   {
     path: 'login',
     loadChildren: () =>
       import('./pages/account/login/login.module').then(
-        (m) => m.LoginPageModule
+        (x) => x.LoginPageModule
       ),
   },
+  // {
+  //   path: '',
+  //   loadChildren: () =>
+  //     import('./pages/shared/frame/frame.module').then(
+  //       (x) => x.FramePageModule
+  //     ),
+  // },
   {
-    path: 'frame',
-    loadChildren: () =>
-      import('./pages/shared/frame/frame.module').then(
-        (m) => m.FramePageModule
-      ),
-  },
-  {
-    path: 'frameless',
-    loadChildren: () =>
-      import('./pages/shared/frameless/frameless.module').then(
-        (m) => m.FramelessPageModule
-      ),
+    path: '',
+    component: FramePage,
+    canActivate: [AuthorizedGuard],
+    children: [
+      //{ path: '', loadChildren: './pages/home/home.module#HomePageModule' },
+      {
+        path: '',
+        loadChildren: () =>
+          import('./pages/home/home.module').then((x) => x.HomePageModule),
+      },
+      //loadChildren: () => import('../Supplier/CustomerApp.SupplierModule').then(x => x.CustomerAppSupplierModule)
+      {
+        path: 'orders',
+        loadChildren: () =>
+          import('./pages/store/orders/orders.module').then(
+            (x) => x.OrdersPageModule
+          ),
+      },
+      {
+        path: 'orders/:number',
+        loadChildren: () =>
+          import('./pages/store/order-details/order-details.module').then(
+            (x) => x.OrderDetailsPageModule
+          ),
+      },
+    ],
   },
 ];
 
